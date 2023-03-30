@@ -1,34 +1,39 @@
 import { PokerChip, MagnifyingGlass,Hash } from "phosphor-react";
 import { useEffect, useState } from "react";
+import { Card } from "./components/Card";
+
+interface IPokemon{
+  name: string;
+
+
+}
 
 function App() {
-  const [pokemons, setPokemons] = useState{()};
+  const [pokemons, setPokemons] = useState <IPokemon[]> ([]);
 
   async function fetchData (){
     const data = await
-     fetch('https://pokeapi.co/api/v2/pokemon?militi=120').then ((response)=> response.json())
-
-     console.log (data);
-
-
-  }
-
-  useEffect{() =>
-  
-  }
+     fetch('https://pokeapi.co/api/v2/pokemon?limit=120').then ((response)=> response.json())
+     
     
+     setPokemons(data.results);
+
   }
+
+  useEffect(() => {
+    fetchData();
+  }, [])
   
   return (
     <div className= "flex flex-col mb-12"> 
-        <header className="flex flex-col bg-red-700 w-full items-start px-6 py-4 drop-shadow-lg">
+        <header className="flex flex-col bg-red-500 w-full items-start px-6 py-4 drop-shadow-lg">
           <div className="flex items-center gap-4 text-white font-bold py-4">
             <PokerChip size={44} />
 
             <h1 className="text-3xl">Pokedex</h1>
           </div>
 
-          <div className="flwx w-full gap-12 items-center justify-between">
+          <div className="flex w-full gap-12 items-center justify-between">
             <div className="flex flex-1 border bg-white rounded-full items-center">
               <span className="flex pl-4">
                 <MagnifyingGlass size={25} weight="bold" className= "text-red-700" />
@@ -51,11 +56,19 @@ function App() {
         </header>
         <main className="grid grid-cols-2
         sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 pt-12 gap-3 mx-auto">
-          {pokemons .map((item)=>(
-          <p key={item .name}> {item.name}</p>
+          {pokemons .map((item,index)=>(
+            <Card
+            name ={item.name}
+            position= {index+1}
+            />
+            
           ))}
          
         </main>
+
+
+
+
     </div>
   )
 }
